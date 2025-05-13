@@ -1,4 +1,4 @@
-***Flow:****
+***Flow:***
 
 -*Stage 1** - Exploration of data 
 
