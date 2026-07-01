@@ -1,85 +1,55 @@
-***Flow:***
+# ADHD & Sex Prediction — CE888 Final Project
 
--**Stage 1** - Exploration of data 
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-classification-F7931E.svg)](https://scikit-learn.org/)
+[![SHAP](https://img.shields.io/badge/SHAP-explainability-FF6B6B.svg)](https://shap.readthedocs.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
--**Exploration** - Stage 1 fixed and without visualization.
+NHS-inspired decision-support research: predict **ADHD diagnosis** and **participant sex** from psychosocial and fMRI data with emphasis on **fairness**, **explainability**, and **female ADHD underdiagnosis**.
 
--**Modelling**
+**Author:** Diego Armando Salinas Lugo · University of Essex (CE888)
 
-**Video:**  https://youtu.be/F41ycarl3_U
+📹 [Project walkthrough](https://youtu.be/F41ycarl3_U)
 
+---
 
-CE888 Final Project – ADHD & Sex Prediction
-Student: Diego Armando Salinas Lugo
-Student ID: ds24353 / 2401168
+## Pipeline
 
---------------------------------------------------
+| Stage | Notebook | Purpose |
+|-------|----------|---------|
+| 1 | `Exploration.ipynb` | Cleaning, feature engineering, train/val export |
+| 2 | `Modelling_Stage2 - Final.ipynb` | Model tuning, fairness, SHAP & LIME |
 
-Project Description
+## Quick start
 
-This project was developed in response to an NHS request to build a data-driven decision-support system to:
+1. Place the course dataset in the project root (provided via Moodle).
+2. Run `Exploration.ipynb` → generates `cleaned_train_data.csv`, `cleaned_validation_data.csv`
+3. Run `Modelling_Stage2 - Final.ipynb` → trains/evaluates final models
 
-1. Assist with ADHD diagnosis using socio-demographic, emotional, parenting, and fMRI data.
-2. Predict a participant's sex, with a specific concern for avoiding underdiagnosis in female ADHD cases.
-3. Ensure that the system is fair, explainable, and aligned with GDPR and clinical safety standards.
+```bash
+pip install pandas numpy scikit-learn shap lime matplotlib seaborn jupyter
+jupyter notebook Exploration.ipynb
+```
 
-The project is divided into two stages:
-- Stage 1 focuses on data cleaning, feature engineering, and preparing training/validation datasets.
-- Stage 2 focuses on training and tuning machine learning models, evaluating their fairness, and interpreting results using explainability tools.
+## Final models
 
---------------------------------------------------
+| Task | Model | Rationale |
+|------|-------|-----------|
+| ADHD diagnosis | Random Forest | High recall, strong generalization |
+| Sex classification | Logistic Regression | Best female recall, interpretable |
 
-How to Run the Code
+## Methodology
 
-1. Download the official dataset provided via Moodle and place it in the same directory as the notebooks.
-2. Open and run all cells in the notebook:
-   - Exploration.ipynb
-     Loads raw data, handles missing values, performs stratified splitting,
-     merges all features and saves:
-       - cleaned_train_data.csv
-       - cleaned_validation_data.csv
-3. Then open and run:
-   - Modelling_Stage2.ipynb
-     Loads the cleaned datasets, splits the validation set into new validation + final test sets,
-     trains, tunes, and evaluates models for ADHD and Sex classification,
-     uses LIME and SHAP for explainability, and performs fairness evaluation.
+- Stratified splits with custom combined labels
+- KernelPCA (RBF, 100 components) on fMRI features
+- Mutual-information feature selection
+- Fairness evaluation across subgroups
+- LIME + SHAP for clinical interpretability
 
---------------------------------------------------
+## Disclaimer
 
-Assumptions Made
+Academic research project. Not validated for clinical deployment without institutional governance review.
 
-- Stratification for data splits was done using a custom combined_label (ADHD_Outcome + Sex_F).
-- Iterative Imputer was used for numerical missing values, as recommended.
-- Missing ethnicity values were replaced with 3 ("Unknown").
-- Feature selection was based on mutual information scores.
-- Dimensionality reduction on fMRI data used KernelPCA with RBF kernel, keeping 100 components.
-- ADHD and Sex were treated as independent binary classification problems.
-- Final model evaluation was performed only once using a hold-out test set.
-- Evaluation focused on recall and fairness, especially for female ADHD cases.
-- Models were selected based on performance, fairness, and interpretability.
+## License
 
---------------------------------------------------
-
-Files Included
-
-- Exploration.ipynb – Stage 1 notebook
-- Modelling_Stage2.ipynb – Stage 2 notebook
-- cleaned_train_data.csv / cleaned_validation_data.csv (generated)
-- README.txt – This document
-
---------------------------------------------------
-
-Final Model Choices
-
-Task                  | Final Model         | Justification
----------------------|---------------------|-----------------------------------------------------------
-ADHD Diagnosis        | Random Forest       | High recall, strong generalization, fair subgroup results.
-Sex Classification    | Logistic Regression | Best female recall, balanced fairness, interpretable.
-
---------------------------------------------------
-
-Contact
-
-University email: ds24353@essex.ac.uk
-
-Project completed as part of CE888 – MSc Data Science and its Applications – University of Essex
+MIT — see [LICENSE](LICENSE).
